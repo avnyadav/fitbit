@@ -1,10 +1,10 @@
 import yaml
 from webapp.entity_layer.encryption.encrypt_confidential_data import EncryptData
-# from project_library_layer.credentials.credential_data import save_google_cloud_storage_credentials,save_azure_blob_storage_connection_str,save_azure_input_file_storage_connection_str,save_azure_event_hub_namespace_connection_str,save_watcher_checkpoint_storage_account_connection_str,save_aws_credentials
+from webapp.project_library_layer.credentials.credential_data import save_google_cloud_storage_credentials,save_azure_blob_storage_connection_str,save_azure_input_file_storage_connection_str,save_azure_event_hub_namespace_connection_str,save_watcher_checkpoint_storage_account_connection_str,save_aws_credentials
 from webapp.project_library_layer.credentials.credential_data import save_azure_blob_storage_connection_str, \
     save_aws_credentials, save_google_cloud_storage_credentials, save_watcher_checkpoint_storage_account_connection_str, \
     save_azure_input_file_storage_connection_str, save_user_detail, save_azure_event_hub_namespace_connection_str, \
-    save_flask_session_key,save_email_configuration
+   save_flask_session_key,save_email_configuration
 import json
 
 
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         "root_folder": config_detail["root_folder"]
     }
     save_configuration(project_credentials, "project_credentials.yaml")
-    """
+
     cloud_storage = config_detail["cloud_storage"]
 
     # Azure
@@ -87,4 +87,4 @@ if __name__ == "__main__":
     email_config["passkey"] = encrypter.encrypt_message(email_config["passkey"],key)
     save_email_configuration(email_config)
     print(config_detail)
-    """
+

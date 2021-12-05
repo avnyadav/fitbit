@@ -1,10 +1,10 @@
-root_folder: machine-learning-327031
+root_folder: machine-learning-3265121
 
 mongodb:
-  is_cloud: 1
+  is_cloud: 0
   user_name: avnyadav
   password: Aa327030
-  url: mongodb+srv://avnyadav:Aa327030@cluster0:wz7et:mongodb:net/myFirstDatabase?authSource=admin&replicaSet=atlas-uv8eug-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true
+  url: mongodb+srv://{0}:{1}@cluster0:wz7et:mongodb:net/myFirstDatabase?authSource=admin&replicaSet=atlas-uv8eug-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true
 
 cloud_storage:
   azure_blob_storage:
