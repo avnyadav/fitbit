@@ -6,6 +6,7 @@ Created on Mon Feb  8 06:06:50 2021
 """
 # importing mongodb file
 import ssl
+import urllib
 
 import pymongo
 import json
@@ -21,12 +22,13 @@ class MongoDBOperation:
             if user_name is None or password is None:
                 # creating initial object to fetch mongodb credentials
                 credentials = get_mongo_db_credentials()  # return dictionary with user name and password
-                self.__user_name = credentials['user_name']
-                self.__password = credentials['password']
+                self.user_name = credentials['user_name']
+                self.password = credentials['password']
+                self.url = credentials["url"]
+                self.is_cloud = int(credentials["is_cloud"])
             else:
-                self.__user_name = user_name
-                self.__password = password
-
+                self.user_name = user_name
+                self.password = password
         except Exception as e:
             mongo_db_exception = MongoDbException(
                 "Failed to instantiate mongo_db_object in module [{0}] class [{1}] method [{2}]"
@@ -39,7 +41,10 @@ class MongoDBOperation:
         :return: mongo_db_url
         """
         try:
-            url=""
+            url = self.url.format(urllib.parse.quote_plus(self.user_name), urllib.parse.quote_plus(self.password))
+
+            if not self.is_cloud:
+                url = "localhost:27017"
             return url
         except Exception as e:
             mongo_db_exception = MongoDbException(
@@ -53,10 +58,8 @@ class MongoDBOperation:
         Return pymongoClient object to perform action with MongoDB
         """
         try:
-
-            url = 'mongodb+srv://{0}:{1}@cluster0.wz7et.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'.format(
-                self.__user_name, self.__password)
-            client = pymongo.MongoClient(url,ssl_cert_reqs=ssl.CERT_NONE)  # creating database client object
+            client = pymongo.MongoClient(self.get_mongo_db_url(),
+                                         ssl_cert_reqs=ssl.CERT_NONE)  # creating database client object
             return client
         except Exception as e:
             mongo_db_exception = MongoDbException(
@@ -379,7 +382,6 @@ class MongoDBOperation:
                             self.get_record.__name__))
             raise Exception(mongo_db_exception.error_message_detail(str(e), sys)) from e
 
-
     def get_min_value_of_column(self, database_name, collection_name, query, column):
         """
 
@@ -484,7 +486,7 @@ class MongoDBOperation:
                             self.update_record_in_collection.__name__))
             raise Exception(mongo_db_exception.error_message_detail(str(e), sys)) from e
 
-    def get_dataframe_of_collection(self, db_name, collection_name,query=None):
+    def get_dataframe_of_collection(self, db_name, collection_name, query=None):
         """
 
         Parameters
@@ -504,7 +506,7 @@ class MongoDBOperation:
             database = self.create_database(client, db_name)
             collection = self.get_collection(collection_name=collection_name, database=database)
             if query is None:
-                query={}
+                query = {}
             df = pd.DataFrame(list(collection.find(query)))
             if "_id" in df.columns.to_list():
                 df = df.drop(columns=["_id"], axis=1)
@@ -516,7 +518,7 @@ class MongoDBOperation:
                             self.get_dataframe_of_collection.__name__))
             raise Exception(mongo_db_exception.error_message_detail(str(e), sys)) from e
 
-    def remove_record(self,db_name, collection_name,query):
+    def remove_record(self, db_name, collection_name, query):
         try:
             client = self.get_database_client_object()
             database = self.create_database(client, db_name)
@@ -529,7 +531,3 @@ class MongoDBOperation:
                     .format(MongoDBOperation.__module__.__str__(), MongoDBOperation.__name__,
                             self.remove_record.__name__))
             raise Exception(mongo_db_exception.error_message_detail(str(e), sys)) from e
-
-
-
-

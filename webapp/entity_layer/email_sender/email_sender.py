@@ -39,7 +39,7 @@ class EmailSender:
             # Create secure connection with server and send email
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
                 smtp.login(self.__sender_email_id, self.__passkey)
-                #smtp.send_message(message)
+                smtp.send_message(message)
         except Exception as e:
             email_sender_excep = EmailSenderException(
                 "Failed during sending email module [{0}] class [{1}] method [{2}]"

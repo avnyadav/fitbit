@@ -60,20 +60,20 @@ class EncryptData:
 
         :return:
         """
-        #key = os.environ.get('SECRET_KEY_MONGO_DB', None)
-        #key=key.encode('utf-8')
-        key = "B1A8LW5_rCRsP2KnQKSdm2qDpwo29fsq1TPcaHGAoJo="
+        key = os.environ.get('SECRET_KEY_MONGO_DB', None)
+        key=key.encode('utf-8')
+
         return key
 
 
-
-    def encrypt_message(self,message):
+    def encrypt_message(self,message,key=None):
         """
         Encrypts a message
         """
 
         encoded_message = message.encode()
-        key=self.load_key()
+        if key is None:
+            key=self.load_key()
         #print(key)
         f = Fernet(key)
         encrypted_message = f.encrypt(encoded_message)
@@ -81,12 +81,15 @@ class EncryptData:
         #print(encrypted_message)
         return encrypted_message
 
-    def decrypt_message(self,encrypted_message):
+    def decrypt_message(self,encrypted_message,key=None):
         """
         Decrypts an encrypted message
         """
-
-        key=self.load_key()
+        if key is None:
+            import yaml
+            config = yaml.safe_load(open("project_credentials.yaml"))
+            key = config["key"]
+            #key=self.load_key()
         f = Fernet(key)
         decrypted_message = f.decrypt(encrypted_message)
         return decrypted_message

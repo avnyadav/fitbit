@@ -1,3 +1,4 @@
+README.md
 setup.py
 fitbit.egg-info/PKG-INFO
 fitbit.egg-info/SOURCES.txt
@@ -37,6 +38,9 @@ webapp/controller/project_controller/__init__.py
 webapp/controller/project_controller/project_controller.py
 webapp/controller/scheduler_controller/__init__.py
 webapp/controller/scheduler_controller/scheduler_controller.py
+webapp/data_access_layer/__init__.py
+webapp/data_access_layer/mongo_db/__init__.py
+webapp/data_access_layer/mongo_db/mongo_db_atlas.py
 webapp/entity_layer/__init__.py
 webapp/entity_layer/email_sender/__init__.py
 webapp/entity_layer/email_sender/email_sender.py
@@ -129,5 +133,6 @@ webapp/project_library_layer/datetime_libray/__init__.py
 webapp/project_library_layer/datetime_libray/date_time.py
 webapp/project_library_layer/initializer/__init__.py
 webapp/project_library_layer/initializer/initializer.py
+webapp/project_library_layer/initializer/setup_configuration.py
 webapp/project_library_layer/project_training_prediction_mapper/__init__.py
 webapp/project_library_layer/project_training_prediction_mapper/project_training_prediction_mapper.py
